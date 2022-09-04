@@ -58,8 +58,6 @@ public class DashBoardController {
     @FXML
     protected void browsePatternOnClick(ActionEvent event) {
 
-
-
         Stage window = (Stage) parentWindow.getScene().getWindow();
 
         FileChooser file = new FileChooser();
@@ -78,7 +76,6 @@ public class DashBoardController {
 
         target.getChildren().clear();
 
-
         try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
             String text;
             while ((text = reader.readLine()) != null) {
@@ -93,6 +90,14 @@ public class DashBoardController {
         }
         target.setMaxHeight(313);
         target.setMaxWidth(258);
+
+    }
+
+    protected void algorithm() {
+
+        //TODO: ZAKI'S PART
+
+
 
     }
 
