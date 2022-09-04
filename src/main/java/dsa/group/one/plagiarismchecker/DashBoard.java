@@ -24,6 +24,7 @@ public class DashBoard extends Application {
 //        window.setMinHeight(500);
 //        window.setMinWidth(500);
         window.setTitle("Plagiarism Checker v" + version + " by Group 1");
+        window.setResizable(false);
         window.setScene(scene);
         window.show();
 
