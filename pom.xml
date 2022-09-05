@@ -31,9 +31,9 @@
             <version>18</version>
         </dependency>
         <dependency>
-            <groupId>org.fxmisc.richtext</groupId>
-            <artifactId>richtextfx</artifactId>
-            <version>0.10.9</version>
+            <groupId>io.github.palexdev</groupId>
+            <artifactId>materialfx</artifactId>
+            <version>11.13.5</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

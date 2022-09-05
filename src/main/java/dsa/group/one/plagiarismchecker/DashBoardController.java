@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -15,13 +14,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 
 public class DashBoardController {
     //The controller class handles the interaction between the fxml and java classes.
     @FXML public VBox parentWindow;
     @FXML public Button browseSource;
     @FXML public Button browsePattern;
-
     @FXML private Label welcomeText;
     @FXML private TextFlow sourceTxt;
     @FXML private TextFlow patternTxt;
@@ -36,8 +35,6 @@ public class DashBoardController {
 
         Text greenText = new Text(" GAY");
         greenText.setFill(Color.GREEN);
-
-        sourceTxt.getChildren().addAll(redText, greenText);
 
     }
 
@@ -61,8 +58,6 @@ public class DashBoardController {
     @FXML
     protected void browsePatternOnClick(ActionEvent event) {
 
-
-
         Stage window = (Stage) parentWindow.getScene().getWindow();
 
         FileChooser file = new FileChooser();
@@ -84,13 +79,25 @@ public class DashBoardController {
         try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
             String text;
             while ((text = reader.readLine()) != null) {
-                Text convertedTxt = new Text (text);
-                target.getChildren().addAll(convertedTxt);
+                System.out.println(text);
+
+                Text convertedTxt = new Text (text + "\n");
+                target.getChildren().add(convertedTxt);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        target.setMaxHeight(313);
+        target.setMaxWidth(258);
+
+    }
+
+    protected void algorithm() {
+
+        //TODO: ZAKI'S PART
+
+
 
     }
 
