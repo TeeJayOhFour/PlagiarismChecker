@@ -25,6 +25,9 @@ public class DashBoardController {
     @FXML private TextFlow sourceTxt;
     @FXML private TextFlow patternTxt;
 
+    private File src = null;
+    private File pat = null;
+
     @FXML
     protected void otherStuff() {
 
@@ -51,6 +54,7 @@ public class DashBoardController {
 
         if(selectedFile != null) {
             previewFile(selectedFile, sourceTxt);
+            src = selectedFile;
         }
     }
 
@@ -68,7 +72,9 @@ public class DashBoardController {
 
         if(selectedFile != null) {
             previewFile(selectedFile, patternTxt);
+            pat = selectedFile;
         }
+
 
     }
 
@@ -88,14 +94,43 @@ public class DashBoardController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        target.setMaxHeight(313);
-        target.setMaxWidth(258);
+//        target.setMaxHeight(313);
+//        target.setMaxWidth(258);
 
     }
 
-    protected void algorithm() {
+    protected void plagiarizeCheck() {
 
-        //TODO: ZAKI'S PART
+        int plagiarized = 0;
+        int totalCharCount = 0;
+
+        //null check
+        if (src == null || pat == null) {
+            welcomeText.setText("Error, please select a pattern and source file!");
+            return;
+        }
+
+        //converting to readers
+        try (BufferedReader source = new BufferedReader(new FileReader(src))) {
+
+            try (BufferedReader pattern = new BufferedReader(new FileReader(src))) {
+
+                //now compare each line from their readers.
+
+
+
+
+            } catch(IOException e) {
+                e.printStackTrace();
+                welcomeText.setText("Error, pattern file not found! It was either renamed, moved or deleted");
+            }
+
+
+        } catch(IOException e) {
+            e.printStackTrace();
+            welcomeText.setText("Error, source file not found! It was either renamed, moved or deleted");
+
+        }
 
 
 
