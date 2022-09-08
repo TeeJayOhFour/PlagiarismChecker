@@ -2,10 +2,13 @@ package dsa.group.one.plagiarismchecker;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -31,6 +34,7 @@ public class DashBoardController {
     @FXML private TextFlow sourceTxt;
     @FXML private TextFlow patternTxt;
     @FXML private Button checkBtn;
+    @FXML private PieChart chart;
 
     //Global vars for files
     private File src = null;
@@ -87,6 +91,8 @@ public class DashBoardController {
 
     protected void previewFile(File selectedFile, TextFlow target) {
 
+//        chart.setData();
+
         target.getChildren().clear();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
@@ -94,7 +100,7 @@ public class DashBoardController {
             while ((text = reader.readLine()) != null) {
                 System.out.println(text);
 
-                Text convertedTxt = new Text (text + "\n");
+                Text convertedTxt = new Text (text + " ");
                 target.getChildren().add(convertedTxt);
             }
 
@@ -123,8 +129,6 @@ public class DashBoardController {
         String[] srcList = null;
         List<String> plagList = new ArrayList<>();
 
-        String tempPattern;
-        String tempSource;
         boolean sourceLooped = false;
 
         //converting to readers
@@ -132,10 +136,8 @@ public class DashBoardController {
 
             try (BufferedReader source = new BufferedReader(new FileReader(src))) {
 
-
                 patList = pattern.lines().collect(Collectors.joining()).split("\\.");
                 srcList = source.lines().collect(Collectors.joining()).split("\\.");
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -152,14 +154,24 @@ public class DashBoardController {
         System.out.println("Sources: " + Arrays.toString(srcList));
         System.out.println();
 
+        ArrayList<Integer> patFlags = new ArrayList<Integer>();
+        ArrayList<Integer> srcFlags = new ArrayList<Integer>();
+
+        Integer patIndex = 0;
+
         //Main matching algorithm:
         if (patList != null) for (String pattern : patList) {
+
+            Integer sourceIndex = 0;
+
             pattern = pattern.trim();
             System.out.println("\nChecking with new pattern : \n" + pattern + " size: " + pattern.length());
             for (String source : srcList) {
+
                 source = source.trim();
                 System.out.println("\nwith source: \n" + source);
 
+                boolean plagFlag = false;
                 //checking if a pattern repeated in the source again
                 if (!plagList.contains(pattern)) {
 
@@ -185,18 +197,51 @@ public class DashBoardController {
                                 System.out.println("\nPlagiarism found, adding count");
                                 plagiarized += source.length();
                                 plagList.add(source);
+                                patFlags.add(patIndex);
+                                srcFlags.add(sourceIndex);
 
                             } else System.out.print(false);
                         } else System.out.print(false);
                     } else System.out.print(false);
 
                 }
+
+                sourceIndex++;
             }
 
             sourceLooped = true;
-
+            patIndex++;
         }
 
+        //readding the text in the textflow with highlighting
+        patternTxt.getChildren().clear();
+
+
+        for(int i = 0; i < patList.length; i++) {
+
+            Text temp = new Text (patList[i].trim() +". ");
+            if (srcFlags.contains(i)) {
+                temp.setFill(Color.RED);
+                temp.setFont(Font.font("Calibri", FontWeight.BOLD,12));
+            }
+            patternTxt.getChildren().add(temp);
+
+
+        }
+        sourceTxt.getChildren().clear();
+
+        for(int i = 0; i < srcList.length; i++) {
+
+            Text temp = new Text (srcList[i].trim() +". ");
+            if (srcFlags.contains(i)) {
+                temp.setFill(Color.RED);
+                temp.setFont(Font.font("Calibri", FontWeight.BOLD,12));
+            }
+            sourceTxt.getChildren().add(temp);
+
+
+
+        }
 
 //        System.out.println("\nComparing '" + tempPattern + "' \nwith \n'" + line + "'");
 //        tempPattern = tempPattern.trim();
@@ -236,7 +281,6 @@ public class DashBoardController {
         System.out.println("Total source count is " + totalCharCount);
         System.out.println("Plagiarized count is " + plagiarized);
 
-        checkBtn.setText(percentage + "%");
         checkBtn.arm();
 
     }

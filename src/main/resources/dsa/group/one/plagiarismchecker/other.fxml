@@ -1,33 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import io.github.palexdev.materialfx.controls.MFXIconWrapper?>
-<?import io.github.palexdev.materialfx.controls.MFXProgressBar?>
-<?import io.github.palexdev.materialfx.controls.MFXProgressSpinner?>
-<?import io.github.palexdev.materialfx.controls.MFXRadioButton?>
-<?import io.github.palexdev.materialfx.controls.MFXRectangleToggleNode?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
-<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox?>
-<?import io.github.palexdev.materialfx.dialogs.MFXGenericDialog?>
-<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsa.group.one.plagiarismchecker.Other">
-   <children>
-      <MFXButton layoutX="151.0" layoutY="30.0" />
-      <MFXCheckbox layoutX="224.0" layoutY="31.0" />
-      <MFXProgressBar layoutX="377.0" layoutY="40.0" />
-      <MFXProgressSpinner layoutX="452.0" layoutY="55.0" />
-      <MFXTextField layoutX="151.0" layoutY="70.0" prefHeight="65.0" prefWidth="219.0" />
-      <MFXFontIcon layoutX="206.0" layoutY="263.0" wrappingWidth="15.0" />
-      <MFXRadioButton layoutX="390.0" layoutY="210.0" />
-      <MFXGenericDialog layoutX="61.0" layoutY="159.0" />
-      <MFXRectangleToggleNode layoutX="443.0" layoutY="118.0" />
-      <MFXLegacyComboBox layoutX="47.0" layoutY="94.0" />
-      <MFXIconWrapper layoutX="103.0" layoutY="159.0" />
-      <MFXComboBox layoutX="16.0" layoutY="25.0" />
-   </children>
+
 </AnchorPane>
