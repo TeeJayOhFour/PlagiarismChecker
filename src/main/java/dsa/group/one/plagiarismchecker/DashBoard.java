@@ -13,14 +13,14 @@ import java.io.IOException;
 
 public class DashBoard extends Application {
 
-    double version = 1.01;
+    double version = 1.2;
 
     //this class is used to "create" the windows and other UI elements using the Stage class.
     @Override
     public void start(Stage window) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(DashBoard.class.getResource("dashboard.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 700);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 800);
 //        window.setMinHeight(500);
 //        window.setMinWidth(500);
         window.setTitle("Plagiarism Checker v" + version + " by Group 1");

@@ -1,7 +1,10 @@
 package dsa.group.one.plagiarismchecker;
 
+import eu.hansolo.medusa.Gauge;
+import eu.hansolo.medusa.GaugeBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,10 +20,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.net.URL;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -34,7 +35,10 @@ public class DashBoardController {
     @FXML private TextFlow sourceTxt;
     @FXML private TextFlow patternTxt;
     @FXML private Button checkBtn;
-    @FXML private PieChart chart;
+    @FXML private Gauge gauge;
+
+    @FXML private Label sourceFileName;
+    @FXML private Label patternFileName;
 
     //Global vars for files
     private File src = null;
@@ -67,6 +71,8 @@ public class DashBoardController {
         if(selectedFile != null) {
             previewFile(selectedFile, sourceTxt);
             src = selectedFile;
+            sourceFileName.setText("Loaded file: '" + selectedFile.getName() + "'");
+
         }
     }
 
@@ -84,6 +90,7 @@ public class DashBoardController {
         if(selectedFile != null) {
             previewFile(selectedFile, patternTxt);
             pat = selectedFile;
+            patternFileName.setText("Loaded file: '" + selectedFile.getName() + "'");
         }
 
 
@@ -113,6 +120,7 @@ public class DashBoardController {
     @FXML
     protected void plagiarizeCheck(ActionEvent event) {
 
+
         int plagiarized = 0;
         int totalCharCount = 0;
 
@@ -122,7 +130,6 @@ public class DashBoardController {
             return;
         }
 
-        checkBtn.setText("Checking...");
         checkBtn.disarm();
 
         String[] patList = null;
@@ -154,8 +161,8 @@ public class DashBoardController {
         System.out.println("Sources: " + Arrays.toString(srcList));
         System.out.println();
 
-        ArrayList<Integer> patFlags = new ArrayList<Integer>();
-        ArrayList<Integer> srcFlags = new ArrayList<Integer>();
+        ArrayList<Integer> patFlags = new ArrayList<>();
+        ArrayList<Integer> srcFlags = new ArrayList<>();
 
         Integer patIndex = 0;
 
@@ -171,7 +178,6 @@ public class DashBoardController {
                 source = source.trim();
                 System.out.println("\nwith source: \n" + source);
 
-                boolean plagFlag = false;
                 //checking if a pattern repeated in the source again
                 if (!plagList.contains(pattern)) {
 
@@ -243,38 +249,13 @@ public class DashBoardController {
 
         }
 
-//        System.out.println("\nComparing '" + tempPattern + "' \nwith \n'" + line + "'");
-//        tempPattern = tempPattern.trim();
-//
-//        //adding length of source to total
-//        if (!sourceFinished) totalCharCount += tempSource.length();
-//
-//        //break if source sentences is smaller than pattern
-//        System.out.print("\nis pattern larger than source? ");
-//        if (tempPattern.length() <= tempSource.length()) {
-//            System.out.print(true);
-//
-//            //checking hash values
-//            System.out.print("\nAre hash codes equal? ");
-//            if (tempSource.hashCode() == tempPattern.hashCode()) {
-//                System.out.print(true);
-//
-//                //checking actual content of sentences.
-//                System.out.print("\nAre strings equal? ");
-//                if (tempSource.equals(tempPattern)) {
-//                    System.out.print(true);
-//
-//                    //code reaches this point if it actually is an EXACT match.
-//                    System.out.println("\nPlagiarism found, adding count");
-//                    plagiarized += tempSource.length();
-//
-//                } else System.out.print(false);
-//            } else System.out.print(false);
-//        } else System.out.print(false);
-
         float percentage = (float) plagiarized / totalCharCount * 100;
 
         if (percentage > 100.0) percentage = 100;
+
+        if (Double.isNaN(percentage)) percentage = 0;
+
+        gauge.setValue(percentage);
 
         welcomeText.setText("Plagiarized percentage is " + percentage);
         System.out.println("\nPlagiarized percentage is " + percentage);
