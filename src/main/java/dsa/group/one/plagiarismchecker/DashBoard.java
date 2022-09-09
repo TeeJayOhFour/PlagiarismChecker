@@ -20,10 +20,10 @@ public class DashBoard extends Application {
     public void start(Stage window) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(DashBoard.class.getResource("dashboard.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 800);
+        Scene scene = new Scene(fxmlLoader.load(), 1010, 625);
 //        window.setMinHeight(500);
 //        window.setMinWidth(500);
-        window.setTitle("Plagiarism Checker v" + version + " by Group 1");
+        window.setTitle("PLAGCHECK 9000 v-" + version + " | A Plagiarism Checker by Group 1");
         window.setResizable(false);
         window.setScene(scene);
         window.show();

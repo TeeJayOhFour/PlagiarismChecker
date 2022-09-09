@@ -8,8 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -28,7 +30,7 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 
 public class DashBoardController {
     //The controller class handles the interaction between the fxml and java classes.
-    @FXML public VBox parentWindow;
+    @FXML public AnchorPane parentWindow;
     @FXML public Button browseSource;
     @FXML public Button browsePattern;
     @FXML private Label welcomeText;
@@ -36,6 +38,7 @@ public class DashBoardController {
     @FXML private TextFlow patternTxt;
     @FXML private Button checkBtn;
     @FXML private Gauge gauge;
+
 
     @FXML private Label sourceFileName;
     @FXML private Label patternFileName;
@@ -114,6 +117,8 @@ public class DashBoardController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        gauge.setValue(0);
 
     }
 
@@ -255,9 +260,14 @@ public class DashBoardController {
 
         if (Double.isNaN(percentage)) percentage = 0;
 
-        gauge.setValue(percentage);
+        Color init = gauge.getBarColor();
 
-        welcomeText.setText("Plagiarized percentage is " + percentage);
+        gauge.setValue(percentage);
+        double hueVal = 100 - percentage;
+        gauge.setBarColor(Color.hsb(hueVal,init.getSaturation(),init.getBrightness()));
+
+
+        welcomeText.setText("Debug: " + plagiarized + " / " + totalCharCount + " = " + percentage);
         System.out.println("\nPlagiarized percentage is " + percentage);
         System.out.println("Total source count is " + totalCharCount);
         System.out.println("Plagiarized count is " + plagiarized);
@@ -266,4 +276,21 @@ public class DashBoardController {
 
     }
 
+    @FXML
+    protected void transitionGauge() {
+
+
+        gauge.setAnimationDuration(150);
+
+        double rand = Math.random() * (100-0 + 1) + 0;
+
+        gauge.setValue(rand);
+
+        double hueVal = 100-rand;
+
+
+
+
+
+    }
 }
