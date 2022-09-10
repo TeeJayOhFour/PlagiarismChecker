@@ -2,9 +2,12 @@ module dsa.group.one.plagiarismchecker {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
-
-    requires org.kordamp.ikonli.javafx;
-    requires eu.hansolo.tilesfx;
+    requires java.desktop;
+    requires MaterialFX;
+    requires eu.hansolo.medusa;
+    requires eu.hansolo.toolbox;
+    requires eu.hansolo.toolboxfx;
+    requires javafx.swingEmpty;
 
     opens dsa.group.one.plagiarismchecker to javafx.fxml;
     exports dsa.group.one.plagiarismchecker;
