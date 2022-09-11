@@ -1,33 +1,24 @@
 package dsa.group.one.plagiarismchecker;
 
 import eu.hansolo.medusa.Gauge;
-import eu.hansolo.medusa.GaugeBuilder;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import io.github.palexdev.materialfx.controls.MFXTextField;
 
 public class DashBoardController {
     //The controller class handles the interaction between the fxml and java classes.
@@ -49,7 +40,7 @@ public class DashBoardController {
     private File pat = null;
 
     @FXML
-    protected void browseSourceOnClick(ActionEvent event) {
+    protected void browseSourceOnClick() {
 
         Stage window = (Stage) parentWindow.getScene().getWindow();
 
@@ -68,7 +59,7 @@ public class DashBoardController {
     }
 
     @FXML
-    protected void browsePatternOnClick(ActionEvent event) {
+    protected void browsePatternOnClick() {
 
         Stage window = (Stage) parentWindow.getScene().getWindow();
 
@@ -111,7 +102,7 @@ public class DashBoardController {
     }
 
     @FXML
-    protected void plagiarizeCheck(ActionEvent event) {
+    protected void plagiarizeCheck() {
 
         int plagiarized = 0;
         int totalCharCount = 0;
