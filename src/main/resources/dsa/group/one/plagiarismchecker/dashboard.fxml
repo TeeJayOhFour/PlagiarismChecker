@@ -12,7 +12,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-
 <AnchorPane fx:id="parentWindow" maxHeight="700.0" prefHeight="620.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsa.group.one.plagiarismchecker.DashBoardController">
    <children>
       <HBox alignment="TOP_CENTER" layoutX="18.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="607.0" prefWidth="1000.0" AnchorPane.topAnchor="0.0">
@@ -27,8 +26,6 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Label>
-               <!--   <PieChart fx:id="chart" startAngle="90.0" title="Test" />-->
-               
                       <Label fx:id="welcomeText" alignment="BOTTOM_CENTER" prefHeight="31.0" prefWidth="260.0" textAlignment="CENTER" />
                   <Gauge fx:id="gauge" animated="true" decimals="2" gradientBarEnabled="true" interactive="true" knobType="FLAT" lcdDesign="RED" ledType="FLAT" maxMeasuredValue="1000.0" needleBehavior="OPTIMIZED" needleSize="THIN" needleType="VARIOMETER" prefHeight="428.0" prefWidth="280.0" skinType="SIMPLE_SECTION" smoothing="true" unit="Plagiarism %">
                      <ledColor>
@@ -55,7 +52,10 @@
                <children>
                   <HBox prefHeight="38.0" prefWidth="773.0">
                      <children>
-                        <Label fx:id="patternFileName" prefHeight="38.0" prefWidth="580.0" style="-fx-border-color: #bebebe;" textAlignment="CENTER" wrapText="true" />
+                        <Label fx:id="patternFileName" prefHeight="38.0" prefWidth="580.0" style="-fx-border-color: #bebebe;" textAlignment="CENTER" wrapText="true">
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </padding></Label>
                           <MFXButton fx:id="browsePattern" alignment="CENTER" onAction="#browsePatternOnClick" prefHeight="38.0" prefWidth="100.0" text="Pattern">
                               <padding>
                                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -81,7 +81,10 @@
                   </HBox>
                   <HBox prefHeight="38.0" prefWidth="775.0">
                      <children>
-                        <Label fx:id="sourceFileName" prefHeight="38.0" prefWidth="580.0" style="-fx-border-color: #bebebe;" textAlignment="CENTER" wrapText="true" />
+                        <Label fx:id="sourceFileName" prefHeight="38.0" prefWidth="580.0" style="-fx-border-color: #bebebe;" textAlignment="CENTER" wrapText="true">
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </padding></Label>
                           <MFXButton fx:id="browseSource" onAction="#browseSourceOnClick" prefHeight="38.0" prefWidth="100.0" text="Source" textAlignment="CENTER">
                               <padding>
                                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

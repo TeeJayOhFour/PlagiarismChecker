@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class DashBoard extends Application {
 
-    double version = 1.2;
+    double version = 1.3;
 
     //this class is used to "create" the windows and other UI elements using the Stage class.
     @Override
