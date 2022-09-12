@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class DashBoardController {
     @FXML private Button checkBtn;
     @FXML private Gauge gauge;
 
+    @FXML private Label Title;
 
     @FXML private Label sourceFileName;
     @FXML private Label patternFileName;
@@ -192,145 +194,146 @@ public class DashBoardController {
                             } else System.out.print(false);
                         } else System.out.print(false);
                     } else System.out.print(false);
-
-
                 sourceIndex++;
             }
-
             sourceLooped = true;
             patIndex++;
         }
 
-        ArrayList<Text> textArrayUsingSourceWords = new ArrayList<>();
-        ArrayList<Text> textArrayUsingPatternWords = new ArrayList<>();
-
-        Map<Integer,Integer> patOffsetStart = new LinkedHashMap<>();
-        Map<Integer,Integer> patOffsetEnd = new LinkedHashMap<>();
-
-        Map<Integer,Integer> srcOffsetStart = new LinkedHashMap<>();
-        Map<Integer,Integer> srcOffsetEnd = new LinkedHashMap<>();
+        ArrayList<plagSentence> plaggedPattern = new ArrayList<>();
+        ArrayList<plagSentence> plaggedSource = new ArrayList<>();
 
 
         //patList and srcList both have each sentences separated by the delimiter '.'
         //for deep check if 5 or more words match consecutively, then count as plagiarism
 
-        //the var pattern has a sentence,
-        //1. hash the first 5 words
-        //2. check with source 5 words
-        //3. if they check out, then mark them as plagiarism
+        int deepCheckSensitivity = 4;
+
 
         if (patList != null && deepCheck) for (String pattern : patList) {
 
-            int sourceIndex = 0;
+            int patWordIndex = 0;
 
-            pattern = pattern.trim();
-            System.out.println("\nChecking with new pattern : \n" + pattern + " size: " + pattern.length());
-            for (String source : srcList) {
+            String[] choppedPattern = pattern.split(" ");
+            if (choppedPattern.length < deepCheckSensitivity + 1) continue;    //skip to next pattern if sentence is too small.
 
-                String[] choppedPattern = pattern.split(" ");
-                String[] choppedSource = source.split(" ");
+            while (patWordIndex < choppedPattern.length) {
 
-                if (choppedPattern.length < 5 || choppedSource.length < 5) continue;    //goes to next iteration
+                boolean patternEnd = false;
 
-                //calculating hash codes
-//                for (int i = patIndex; i < 5; i++) patSum += (choppedPattern[i].trim().toLowerCase()).hashCode();
-//                for (int i = sourceIndex; i < 5; i++) srcSum += (choppedSource[i].trim().toLowerCase()).hashCode();
+                int patSum = 0;
 
-                //adding length of source to total
-                if (!sourceLooped) totalCharCount += source.length();
+                if (patWordIndex + deepCheckSensitivity > choppedPattern.length) break;    //meaning pattern doesn't any more words so no need to check, move to next pattern
 
-                //checking each word
-                for (int i = 0; i < choppedPattern.length; i++) {
-
-                    int hitPerSentence = 0;
-                    int tempCounter = 0;
-
-                    for (int j = 0; j < choppedSource.length; j++) {
-
-                        if (i+j >= choppedPattern.length) {
-                            System.out.println("Pattern reached end of sentence, Source is bigger than pattern");
-                            //TODO: Make it check after a full match from the start again.
-                            break;
-                        }
-
-                        if (!Objects.equals(choppedPattern[i+j].trim().toLowerCase(), choppedSource[j].trim().toLowerCase())) {
-                            if (tempCounter >= 5) hitPerSentence++;  //iterating hitPerSentence if there were previous matches
-                            tempCounter = 0;    //resetting word count in case there's a mismatch in between words
-                        } else tempCounter++;
-
-                        if (tempCounter >= 5) {
-
-                            srcOffsetStart.put(hitPerSentence, j-tempCounter);
-                            srcOffsetEnd.put(hitPerSentence, j);
-
-                            patOffsetStart.put(hitPerSentence, i);
-                            patOffsetEnd.put(hitPerSentence, i+tempCounter);
-
-
-                        }
-
-                    }
-
-                    for (int index = 0; index <= hitPerSentence; index++) {
-
-                        for (int jojo = 0; jojo < choppedSource.length; jojo++) {
-
-                            String delimiter= " ";
-
-                            if (jojo == choppedSource.length-1) delimiter = ".";
-
-                            //checking if the index was caught as plagiarism
-                            if (jojo == srcOffsetStart.get(i) && jojo <= srcOffsetEnd.get(i)) {
-
-                                //adding to plagiarism counter
-                                plagiarized += choppedSource[jojo].length();
-
-                                //add as red text
-                                Text tempFlow = new Text(choppedSource[jojo] + delimiter);
-                                tempFlow.setFill(Color.RED);
-                                tempFlow.setFont(Font.font("Calibri", FontWeight.BOLD,12));
-                                textArrayUsingSourceWords.add(tempFlow);
-
-                            } else {
-                                //add as regular text
-                                Text tempFlow = new Text(choppedSource[jojo] + delimiter);
-                                textArrayUsingSourceWords.add(tempFlow);
-                            }
-
-                        }
-
-                        for (int dio = 0; dio < choppedPattern.length; dio++) {
-
-                            String delimiter= " ";
-
-                            if (dio == choppedPattern.length-1) delimiter = ". ";
-
-                            //checking if the index was caught as plagiarism
-                            if (dio == patOffsetStart.get(i) && dio <= patOffsetEnd.get(i)) {
-
-                                //adding to plagiarism counter
-                                plagiarized += choppedPattern[dio].length();
-
-                                //add as red text
-                                Text tempFlow = new Text(choppedPattern[dio] + delimiter);
-                                tempFlow.setFill(Color.RED);
-                                tempFlow.setFont(Font.font("Calibri", FontWeight.BOLD,12));
-                                textArrayUsingPatternWords.add(tempFlow);
-
-                            } else {
-                                //add as regular text
-                                Text tempFlow = new Text(choppedPattern[dio] + delimiter);
-                                textArrayUsingPatternWords.add(tempFlow);
-                            }
-                        }
-                    }
+                System.out.println("\nComparing : ");
+                System.out.println("-------------------------");
+                for (int i = patWordIndex; i < patWordIndex + deepCheckSensitivity; i++) {
+                    patSum += (choppedPattern[i].trim().toLowerCase()).hashCode();
+                    System.out.print(choppedPattern[i] + " ");
                 }
 
-                sourceIndex++;
-            }
+                for (String source : srcList) {
 
-            sourceLooped = true;
-            patIndex++;
+                    int srcWordIndex = 0;
+                    String[] choppedSource = source.split(" ");
+
+                    if (choppedSource.length < deepCheckSensitivity + 1) continue;    //goes to next iteration since this sentence is too small
+                    while (srcWordIndex < choppedSource.length) {
+
+                        boolean sourceEnd = false;
+                        int srcSum = 0;
+
+                        if (srcWordIndex + deepCheckSensitivity + 1 > choppedSource.length) break;    //reached/exceed the length of the array
+
+                        System.out.println("\n-------------------------");
+                        //calculating hash codes
+                        for (int i = srcWordIndex; i < srcWordIndex + deepCheckSensitivity; i++) {
+                            srcSum += (choppedSource[i].trim().toLowerCase()).hashCode();
+                            System.out.print(choppedSource[i] + " ");
+                        }
+                        System.out.println();
+
+                        if (patSum == srcSum) {
+                            //meaning there was a match of 5 words.
+                            //now checking how many more words might have matched afterwards
+                            int offset = 0;
+
+                            int localPatSum = 0;
+                            int localSrcSum = 0;
+
+
+                            while (localPatSum == localSrcSum) {
+
+                                offset++;
+
+                                if (patWordIndex + offset + deepCheckSensitivity > choppedPattern.length) {
+                                    offset = choppedPattern.length - 1 - patWordIndex;
+                                    patternEnd = true;
+                                    break;
+                                }
+                                if (srcWordIndex + offset + deepCheckSensitivity > choppedSource.length) {
+                                    sourceEnd = true;
+                                    break;
+                                }
+
+                                for (int i = patWordIndex; i < patWordIndex + offset + deepCheckSensitivity; i++)
+                                    localPatSum += (choppedPattern[i].trim().toLowerCase()).hashCode();
+                                for (int i = srcWordIndex; i < srcWordIndex + offset + deepCheckSensitivity; i++)
+                                    localSrcSum += (choppedSource[i].trim().toLowerCase()).hashCode();
+
+
+                            }
+
+                            //checking actual strings to make sure they actually match
+                            for (int i = offset; i > 0; i--) {
+
+                                //checking string content to make sure they actually match from the end of the string.
+                                if (!choppedPattern[patWordIndex + i].equalsIgnoreCase(choppedSource[srcWordIndex + i])) {
+                                    //if a mismatch was found at the end, decrease offset.
+                                    offset--;
+                                }
+
+                                if ((offset + deepCheckSensitivity) < deepCheckSensitivity) break;  //that means only 4 words matched, which won't be counted
+
+                            }
+
+                            //store the starting index of both files with their offset for highlighting later
+                            if ((offset + deepCheckSensitivity) >= deepCheckSensitivity) {
+
+                                plagSentence temp = new plagSentence();
+                                temp.offset = offset;
+                                temp.startIndex = patWordIndex;
+                                temp.sentence = pattern;
+
+                                plagSentence temp2 = new plagSentence();
+                                temp2.offset = offset;
+                                temp2.startIndex = srcWordIndex;
+                                temp2.sentence = source;
+
+                                plaggedPattern.add(temp);
+                                plaggedSource.add(temp2);
+
+                                srcWordIndex += offset;
+
+                            }
+                            //breaks after the first mismatch
+
+                        }
+
+                        //source is shorter than pattern but there's at least 5 matches
+                        //can't compare source to this pattern anymore, move to next pattern
+                        //or if pattern ends then there's no need to compare it to this source anymore.
+                        if (sourceEnd || patternEnd) break;
+                        else srcWordIndex++;
+
+                    }
+
+                    if (patternEnd) break;
+
+                }
+                if (patternEnd) break;
+                patWordIndex++;
+            }
         }
 
 
@@ -368,11 +371,78 @@ public class DashBoardController {
 
         } else {
 
-            for (Text t : textArrayUsingPatternWords) {
-                patternTxt.getChildren().addAll(t);
+            System.out.println("plagged patterns: " + plaggedPattern.size());
+
+            for (plagSentence item : plaggedPattern) {
+                System.out.println("\nSentence index = " + item.sentence);
+                System.out.println("Word index = " + item.startIndex);
+                System.out.println("Offset = " + item.offset);
+
+                for (String sentence : patList) {
+
+                    if (sentence.equalsIgnoreCase(item.sentence)) {
+                        //this sentence was plagiarised, outputting as red
+
+                        String[] choppedSentences = sentence.split(" ");
+
+                        for (int i = 0; i < choppedSentences.length; i++) {
+
+                            Text temp = new Text();
+
+                            if (i == choppedSentences.length-1) temp.setText(choppedSentences[i] + ". ");
+                            else temp.setText(choppedSentences[i] + " ");
+
+                            if (i >= item.startIndex && i <= (item.startIndex + item.offset)) {
+                                plagiarized += choppedSentences[i].length();
+                                temp.setFill(Color.RED);
+                                temp.setFont(Font.font("Calibri", FontWeight.BOLD,12));
+                            }
+                            patternTxt.getChildren().add(temp);
+                        }
+
+                    } else {
+                        //output as regular text
+                        patternTxt.getChildren().add(new Text(sentence + "."));
+                    }
+
+                }
+
             }
-            for (Text t : textArrayUsingSourceWords) {
-                sourceTxt.getChildren().addAll(t);
+            System.out.println("-----------------------------------");
+            System.out.println("\nPlagged sources: " + plaggedSource.size());
+            for (plagSentence item : plaggedSource) {
+                System.out.println("Sentence index = " + item.sentence);
+                System.out.println("Word index = " + item.startIndex);
+                System.out.println("Offset = " + item.offset);
+
+                for (String sentence : srcList) {
+
+                    if (sentence.equalsIgnoreCase(item.sentence)) {
+                        //this sentence was plagiarised, outputting as red
+                        String[] choppedSentences = sentence.split(" ");
+                        for (int i = 0; i < choppedSentences.length; i++) {
+
+                            totalCharCount += choppedSentences[i].length();
+
+                            Text temp = new Text();
+
+                            if (i == choppedSentences.length-1) temp.setText(choppedSentences[i] + ". ");
+                            else temp.setText(choppedSentences[i] + " ");
+
+                            if (i >= item.startIndex && i <= (item.startIndex + item.offset)) {
+                                temp.setFill(Color.RED);
+                                temp.setFont(Font.font("Calibri", FontWeight.BOLD,12));
+                            }
+
+                            sourceTxt.getChildren().add(temp);
+
+                        }
+                    } else {
+                        //output as regular text
+                        patternTxt.getChildren().add(new Text(sentence + "."));
+                    }
+
+                }
             }
         }
 
@@ -396,6 +466,29 @@ public class DashBoardController {
 
         checkBtn.arm();
         checkBtn.setDisable(false);
+
+    }
+
+    public class plagSentence {
+
+        String sentence = null;
+        int startIndex = 0;
+        int offset = 0;
+
+    }
+
+    @FXML
+    protected void  openGit() {
+
+        try {
+
+            URI uri= new URI("https://github.com/TeeJayOhFour/PlagiarismChecker");
+            java.awt.Desktop.getDesktop().browse(uri);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
 
     }
 

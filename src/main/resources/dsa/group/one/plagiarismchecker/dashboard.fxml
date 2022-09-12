@@ -12,18 +12,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="parentWindow" maxHeight="700.0" prefHeight="620.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsa.group.one.plagiarismchecker.DashBoardController">
+<AnchorPane fx:id="parentWindow" maxHeight="700.0" prefHeight="620.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dsa.group.one.plagiarismchecker.DashBoardController">
    <children>
       <HBox alignment="TOP_CENTER" layoutX="18.0" layoutY="27.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="607.0" prefWidth="1000.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="579.0" prefWidth="287.0">
                <children>
-                  <Label fx:id="Title" alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="260.0" text="PLAGCHECK 9000" textAlignment="CENTER">
+                  <Label fx:id="Title" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#openGit" prefHeight="52.0" prefWidth="260.0" style="-fx-border-color: #bebebe;" text="PLAGCHECK 9000" textAlignment="CENTER">
                      <font>
                         <Font name="Leelawadee UI Bold" size="28.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="15.0" />
+                        <Insets top="20.0" />
                      </VBox.margin>
                   </Label>
                       <Label fx:id="welcomeText" alignment="BOTTOM_CENTER" prefHeight="31.0" prefWidth="260.0" textAlignment="CENTER" />
@@ -41,10 +41,13 @@
                         <Color red="0.7607305645942688" green="0.12324275821447372" blue="0.12324275821447372" />
                      </barColor>
                   </Gauge>
-                   <MFXButton fx:id="checkBtn" depthLevel="LEVEL5" onAction="#plagiarizeCheck" prefHeight="50.0" prefWidth="300.0" text="Check">
+                   <MFXButton fx:id="checkBtn" depthLevel="LEVEL5" onAction="#plagiarizeCheck" prefHeight="50.0" prefWidth="300.0" style="-fx-border-color: #bebebe;" text="Check">
                      <font>
                         <Font size="24.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
                   </MFXButton>
                </children>
             </VBox>
@@ -56,9 +59,9 @@
                            <padding>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </padding></Label>
-                          <MFXButton fx:id="browsePattern" alignment="CENTER" onAction="#browsePatternOnClick" prefHeight="38.0" prefWidth="100.0" text="Pattern">
+                          <MFXButton fx:id="browsePattern" alignment="CENTER" onAction="#browsePatternOnClick" prefHeight="38.0" prefWidth="99.0" style="-fx-border-color: #bebebe;" text="Pattern">
                               <padding>
-                                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                               </padding>
                           </MFXButton>
                      </children>
@@ -85,9 +88,9 @@
                            <padding>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </padding></Label>
-                          <MFXButton fx:id="browseSource" onAction="#browseSourceOnClick" prefHeight="38.0" prefWidth="100.0" text="Source" textAlignment="CENTER">
+                          <MFXButton fx:id="browseSource" onAction="#browseSourceOnClick" prefHeight="38.0" prefWidth="100.0" style="-fx-border-color: #bebebe;" text="Source" textAlignment="CENTER">
                               <padding>
-                                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                               </padding>
                           </MFXButton>
                      </children>
