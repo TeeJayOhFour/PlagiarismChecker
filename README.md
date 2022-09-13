@@ -3,6 +3,3 @@ Group Members:
 - Tajwar Rahman Alif
 - Zaki Al-Fardin Ratul
 - Abdullah Al Masum
-
-
-# How it works
