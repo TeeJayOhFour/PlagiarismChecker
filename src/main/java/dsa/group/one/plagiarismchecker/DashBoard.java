@@ -21,7 +21,7 @@ public class DashBoard extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(DashBoard.class.getResource("dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1010, 625);
         window.setTitle("PLAGCHECK 9000 v-" + version + " | A Plagiarism Checker by Group 1");
-        window.getIcons().add(new Image("E:\\Work\\Java projects\\PlagiarismChecker\\logo.png"));
+        window.getIcons().add(new Image("/logo.png"));
         window.setResizable(false);
         window.setScene(scene);
         window.show();
