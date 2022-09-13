@@ -372,15 +372,18 @@ public class DashBoardController {
         } else {
 
             System.out.println("plagged patterns: " + plaggedPattern.size());
+            if (patList != null) for (String sentence : patList) {
 
-            for (plagSentence item : plaggedPattern) {
-                System.out.println("\nSentence index = " + item.sentence);
-                System.out.println("Word index = " + item.startIndex);
-                System.out.println("Offset = " + item.offset);
+                boolean plag = false;
 
-                for (String sentence : patList) {
+                for (plagSentence item : plaggedPattern) {
+
+                    System.out.println("\nSentence index = " + item.sentence);
+                    System.out.println("Word index = " + item.startIndex);
+                    System.out.println("Offset = " + item.offset);
 
                     if (sentence.equalsIgnoreCase(item.sentence)) {
+                        plag = true;
                         //this sentence was plagiarised, outputting as red
 
                         String[] choppedSentences = sentence.split(" ");
@@ -400,9 +403,10 @@ public class DashBoardController {
                             patternTxt.getChildren().add(temp);
                         }
 
-                    } else {
-                        //output as regular text
-                        patternTxt.getChildren().add(new Text(sentence + "."));
+                    }
+
+                    if (!plag) {
+                        patternTxt.getChildren().add(new Text(sentence + ". "));
                     }
 
                 }
@@ -410,14 +414,19 @@ public class DashBoardController {
             }
             System.out.println("-----------------------------------");
             System.out.println("\nPlagged sources: " + plaggedSource.size());
-            for (plagSentence item : plaggedSource) {
-                System.out.println("Sentence index = " + item.sentence);
-                System.out.println("Word index = " + item.startIndex);
-                System.out.println("Offset = " + item.offset);
 
-                for (String sentence : srcList) {
+            if (srcList != null) for (String sentence : srcList) {
+
+                boolean plag = false;
+
+                for (plagSentence item : plaggedSource) {
+
+                    System.out.println("Sentence index = " + item.sentence);
+                    System.out.println("Word index = " + item.startIndex);
+                    System.out.println("Offset = " + item.offset);
 
                     if (sentence.equalsIgnoreCase(item.sentence)) {
+                        plag = true;
                         //this sentence was plagiarised, outputting as red
                         String[] choppedSentences = sentence.split(" ");
                         for (int i = 0; i < choppedSentences.length; i++) {
@@ -437,19 +446,18 @@ public class DashBoardController {
                             sourceTxt.getChildren().add(temp);
 
                         }
-                    } else {
-                        //output as regular text
-                        patternTxt.getChildren().add(new Text(sentence + "."));
                     }
 
+                }
+
+                if (!plag) {
+                    sourceTxt.getChildren().add(new Text(sentence + ". "));
                 }
             }
         }
 
         float percentage = (float) plagiarized / totalCharCount * 100;
-
         if (percentage > 100.0) percentage = 100;
-
         if (Double.isNaN(percentage)) percentage = 0;
 
         Color init = gauge.getBarColor();
